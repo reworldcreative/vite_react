@@ -32,7 +32,9 @@ export default defineConfig(({ command, mode }) => {
         cache: true, // кешувати завантажені шрифти для подальшого використання
         proxy: false, // використовувати проксі для завантаження шрифтів
       }),
-      legacy(), // для генерації легасі версій JavaScript та CSS для застарілих браузерів, які не підтримують сучасний синтаксис або функціональність.
+      legacy({
+        targets: ["defaults"],
+      }), // для генерації легасі версій JavaScript та CSS для застарілих браузерів, які не підтримують сучасний синтаксис або функціональність.
       viteImagemin({
         exclude: [/favicons\/.*\.png$/],
         plugins: {
@@ -95,7 +97,7 @@ export default defineConfig(({ command, mode }) => {
       outDir: "docs",
       chunkSizeWarningLimit: 2000, // 2000 байт
       cssCodeSplit: true, // чи слід розділяти CSS код на окремі файли
-      target: "esnext", // використання ES модулів, які дозволяють браузерам завантажувати та кешувати модулі окремо.
+      // target: "esnext", // використання ES модулів, які дозволяють браузерам завантажувати та кешувати модулі окремо.
       terserOptions: {
         compress: {
           drop_console: true, // Видаляє всі виклики функції console.*.
@@ -146,9 +148,9 @@ export default defineConfig(({ command, mode }) => {
           manualChunks: {
             vendor: ["react", "react-dom"],
           },
-          treeshake: true, // видаляє будь-які частини, які не використовуються.
         },
       },
+      treeshake: true, // видаляє будь-які частини, які не використовуються.
     },
     resolve: {
       alias: {
@@ -157,6 +159,10 @@ export default defineConfig(({ command, mode }) => {
         "@icons": path.resolve(__dirname, "./src/assets/img/icons"),
         "@plugins": path.resolve(__dirname, "./plugins"),
       },
+    },
+
+    optimizeDeps: {
+      include: ["bluebird", "axios", "moment", "classnames", "@material-ui/icons", "react-css-modules"],
     },
   };
 });

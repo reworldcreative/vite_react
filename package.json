@@ -38,11 +38,14 @@
     "imagemin-webp": "^8.0.0",
     "postcss": "^8.4.38",
     "postcss-preset-env": "^9.5.13",
+    "sharp": "^0.33.4",
+    "svgo": "^3.3.2",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vite-plugin-favicon": "^1.0.8",
     "vite-plugin-image-presets": "^0.3.4",
     "vite-plugin-imagemin": "^0.6.1",
+    "vite-plugin-svgo": "^1.4.0",
     "vite-plugin-webfont-dl": "^3.9.4"
   }
 }
