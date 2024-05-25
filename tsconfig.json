@@ -25,7 +25,8 @@
       "@img/*": ["./src/assets/img/*"],
       "@icons/*": ["./src/assets/img/icons/*"],
       "@plugins/*": ["./plugins/*"]
-    }
+    },
+    "types": ["vite/client"]
   },
   "include": ["src", "vite-env.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

@@ -11,6 +11,7 @@ import imageminWebp from "imagemin-webp";
 import imageminOptipng from "imagemin-optipng";
 import { ViteFaviconsPlugin } from "vite-plugin-favicon";
 import PurgeCSS from "@fullhuman/postcss-purgecss";
+import svgr from "vite-plugin-svgr";
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd());
@@ -25,13 +26,24 @@ export default defineConfig(({ command, mode }) => {
     },
     plugins: [
       react(),
-      webfontDL(["https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"], {
-        injectAsStyleTag: true, // вставляти завантажені стилі шрифтів як тег <style> безпосередньо у html документ.
-        minifyCss: true, // мініфікувати CSS перед вставкою
-        async: true, // Асинхронне завантаження шрифтів
-        cache: true, // кешувати завантажені шрифти для подальшого використання
-        proxy: false, // використовувати проксі для завантаження шрифтів
+      svgr({
+        // Для підключення svg як ReactComponent
+        svgrOptions: { exportType: "named", ref: true, svgo: false, titleProp: true },
+        include: "**/*.svg",
       }),
+      webfontDL(
+        [
+          "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap",
+          "https://fonts.googleapis.com/css2?family=Nunito:400&display=swap",
+        ],
+        {
+          injectAsStyleTag: true, // вставляти завантажені стилі шрифтів як тег <style> безпосередньо у html документ.
+          minifyCss: true, // мініфікувати CSS перед вставкою
+          async: true, // Асинхронне завантаження шрифтів
+          cache: true, // кешувати завантажені шрифти для подальшого використання
+          proxy: false, // використовувати проксі для завантаження шрифтів
+        }
+      ),
       legacy({
         targets: ["defaults"],
       }), // для генерації легасі версій JavaScript та CSS для застарілих браузерів, які не підтримують сучасний синтаксис або функціональність.
@@ -61,10 +73,10 @@ export default defineConfig(({ command, mode }) => {
       }),
       env.VITE_FAVICONS === "favicons" &&
         ViteFaviconsPlugin({
-          logo: "./src/assets/img/logo-vite.png", // шлях до вихідного зображення, яке буде використане для генерації favicon.
+          logo: "./src/assets/img/logo.svg", // шлях до вихідного зображення, яке буде використане для генерації favicon.
           // outputPath: "./favicons/",
           favicons: {
-            appName: "vite", // Назва веб-сайту або додатку
+            appName: "Material Landing", // Назва веб-сайту або додатку
             icons: {
               android: true, // Генерує іконку для Android-пристроїв.
               appleIcon: true, // Генерує іконку для пристроїв Apple.
@@ -83,12 +95,12 @@ export default defineConfig(({ command, mode }) => {
           postcssPresetEnv(), // використовувати сучасні функції CSS, які ще не включені в стандарті, але вже підтримуються деякими браузерами.
           PurgeCSS({
             // видалення невикористаних CSS-стилів
-            content: ["./src/**/*.html", "./src/**/*.tsx", "./src/**/*.ts"], // шляхи до файлів, які ви хочете аналізувати на наявність використаного CSS
+            content: ["./*.html", "./src/**/*.tsx", "./src/**/*.ts"], // шляхи до файлів, які ви хочете аналізувати на наявність використаного CSS
             fontFace: true, // видаляти невикористовувані @font-face.
             keyframes: true, // видаляти невикористовувані анімації keyframes.
             variables: true, //  видаляти невикористовувані CSS-змінні.
-            // rejected: true, // Логує видалені CSS-класи для налагодження.
-            // rejectedCss:true, // Створює файл з невикористаними CSS-класами для аналізу.
+            rejected: true, // Логує видалені CSS-класи для налагодження.
+            rejectedCss: true, // Створює файл з невикористаними CSS-класами для аналізу.
           }),
         ],
       },
@@ -161,8 +173,8 @@ export default defineConfig(({ command, mode }) => {
       },
     },
 
-    optimizeDeps: {
-      include: ["bluebird", "axios", "moment", "classnames", "@material-ui/icons", "react-css-modules"],
-    },
+    // optimizeDeps: {
+    //   include: ["bluebird", "axios", "moment", "classnames", "@material-ui/icons", "react-css-modules"],
+    // },
   };
 });
