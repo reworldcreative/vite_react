@@ -15,7 +15,8 @@ import svgr from "vite-plugin-svgr";
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd());
-  return {
+  return { 
+    base: "./",
     server: {
       port: 3000,
       strictPort: true,
